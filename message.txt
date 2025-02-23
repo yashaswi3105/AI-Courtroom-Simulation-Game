@@ -1,0 +1,194 @@
+package com.example.occaziologin
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import com.example.occaziologin.ui.theme.OccazioLoginTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            OccazioLoginTheme {
+                LoginScreen()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginScreen() {
+    val username = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Background Shape
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val width = size.width
+            val height = size.height
+
+            drawPath(
+                path = Path().apply {
+                    moveTo(0f, height * 0.10f)
+                    lineTo(width, height * 0.10f)
+                    lineTo(width, height * 0.80f)
+                    lineTo(width / 2, height)
+                    lineTo(0f, height * 0.80f)
+                    close()
+                },
+                color = Color(0xFFFCE4FF)
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                .zIndex(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Spacer(modifier = Modifier.height(24.dp))
+            Image(
+                painter = painterResource(id = R.drawable.occaziologo),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .size(300.dp)
+                    .padding(bottom = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Username Field
+            OutlinedTextField(
+                value = username.value,
+                onValueChange = { username.value = it },
+                label = { Text("Username") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedBorderColor = Color(0xFF7D1F89),
+                    unfocusedBorderColor = Color(0xFF7D1F89),
+                    focusedLabelColor = Color(0xFF7D1F89),
+                    focusedTextColor = Color(0xFF7D1F89),
+                    unfocusedTextColor = Color(0xFF7D1F89) // Hardcoded text color
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Password Field
+            OutlinedTextField(
+                value = password.value,
+                onValueChange = { password.value = it },
+                label = { Text("Password") },
+                colors = OutlinedTextFieldDefaults.colors( // Hardcoded text color
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedBorderColor = Color(0xFF7D1F89),
+                    unfocusedBorderColor = Color(0xFF7D1F89),
+                    focusedLabelColor = Color(0xFF7D1F89),
+                    focusedTextColor = Color(0xFF7D1F89),
+                    unfocusedTextColor = Color(0xFF7D1F89)// Hardcoded text color
+                ),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ClickableText(
+                text = AnnotatedString("Forgot password"),
+                onClick = { /* TODO: Add forgot password action */ },
+                modifier = Modifier.align(Alignment.End),
+                style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { /* TODO: Handle sign in */ },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF7D1F89),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Sign in", fontSize = 20.sp)
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = "or",
+                fontSize = 20.sp,
+                color = Color(0xFF7D1F89),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp)
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+
+            OutlinedButton(
+                onClick = { /* TODO: Handle Google sign in */ },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Color.Black
+                )
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google_logo),
+                        contentDescription = "Google Logo",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .padding(end = 8.dp)
+                    )
+                    Text(text = "Sign in with Google", fontSize = 16.sp, color = Color.Black)
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { /* TODO: Handle account creation */ },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF7D1F89),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Create account", fontSize = 20.sp)
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    OccazioLoginTheme {
+        LoginScreen()
+    }
+}
